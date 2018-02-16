@@ -3,6 +3,55 @@
 require 'erb'
 require 'json'
 
+def char_to_option(char)
+  return {key_code: char.to_s }                      if (:a..:z).to_a.include?(char.to_sym)
+  return {key_code: char.to_s.downcase, modifiers: [:shift] } if (:A..:Z).to_a.include?(char.to_sym)
+  return {key_code: char.to_s }                      if ('0'..'9').to_a.include?(char.to_s)
+  key_map = {
+    "$": {key_code: "4",                      modifiers: [:shift]},
+    "!": {key_code: "1",                      modifiers: [:shift]},
+    "[": {key_code: "open_bracket",           modifiers: []},
+    "{": {key_code: "open_bracket",           modifiers: [:shift]},
+    "(": {key_code: "9",                      modifiers: [:shift]},
+    "=": {key_code: "equal_sign",             modifiers: []},
+    "+": {key_code: "equal_sign",             modifiers: [:shift]},
+    ")": {key_code: "0",                      modifiers: [:shift]},
+    "}": {key_code: "close_bracket",          modifiers: [:shift]},
+    "]": {key_code: "close_bracket",          modifiers: []},
+    "*": {key_code: "8",                      modifiers: [:shift]},
+    "&": {key_code: "7",                      modifiers: [:shift]},
+    "-": {key_code: "hyphen",                 modifiers: []},
+    "_": {key_code: "hyphen",                 modifiers: [:shift]},
+    "`": {key_code: "grave_accent_and_tilde", modifiers: []},
+    "~": {key_code: "grave_accent_and_tilde", modifiers: [:shift]},
+    "@": {key_code: "2",                      modifiers: [:shift]},
+    "#": {key_code: "3",                      modifiers: [:shift]},
+    "%": {key_code: "5",                      modifiers: [:shift]},
+    "^": {key_code: "6",                      modifiers: [:shift]},
+    "\\": {key_code: "backslash",             modifiers: []},
+    "'": {key_code: "quote",                  modifiers: []},
+    '"': {key_code: "quote",                  modifiers: [:shift]},
+    ",": {key_code: "comma",                  modifiers: []},
+    ".": {key_code: "period",                 modifiers: []},
+    "/": {key_code: "slash",                  modifiers: []},
+    "|": {key_code: "backslash",              modifiers: [:shift]},
+    "?": {key_code: "slash",                  modifiers: [:shift]},
+    ";": {key_code: "semicolon",              modifiers: []},
+    ":": {key_code: "semicolon",              modifiers: [:shift]},
+    "<": {key_code: "comma",                  modifiers: [:shift]},
+    ">": {key_code: "period",                 modifiers: [:shift]},
+  }
+  $stderr << "#{char}: #{key_map[char.to_sym].inspect}\n"
+  key_map[char.to_sym]
+end
+
+def caps_complete(config)
+  return config if config[:modifiers].nil?
+  return config unless config[:modifiers].include?(:shift)
+  config[:optional_modifiers] = (config[:optional_modifiers] || []) + [:caps_lock]
+  config
+end
+
 def _from(key_code, mandatory_modifiers, optional_modifiers)
   data = {}
   data['key_code'] = key_code
