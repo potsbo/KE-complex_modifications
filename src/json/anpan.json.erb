@@ -1,6 +1,7 @@
   {
       <%
       optional_modifiers = ["caps_lock","left_command","left_control","left_alt","right_command","right_control","right_alt"]
+      number_keycodes = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"].map{|k| char_to_option(k)}.map{|k| k[:key_code]}
       froms = [
         "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=",
         "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\",
@@ -25,16 +26,17 @@
       ].map{|k| char_to_option(k)}
       keys  = [froms, toes].transpose
       manipulators  = []
+
       manipulators += keys.map{|k|
         input  = k[0]
         output = k[1]
-
+        default_optional_modifiers = (number_keycodes.include? input[:key_code]) ? [] : ["caps_lock"]
         {
           type: "basic",
           from: _from(
             input[:key_code],
             input[:modifiers] || [],
-            input[:optional_modifiers] || [],
+            input[:optional_modifiers] || default_optional_modifiers,
           ),
           to:   _to(
             [
