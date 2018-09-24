@@ -16,6 +16,22 @@
           "to_if_alone": <%= to([["spacebar", ["option"]]]) %>
         }
       ]
+    },
+    {
+      "description": "Left Shift only to Alt+Shift+Command+space to invoke OmniFocus",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": <%= from("left_shift", [], ["any"]) %>,
+          "to": [
+            {
+              "key_code": "left_shift",
+              "lazy": true
+            }
+          ],
+          "to_if_alone": <%= to([["spacebar", ["option", "shift", "command"]]]) %>
+        }
+      ]
     }
   ]
 }
