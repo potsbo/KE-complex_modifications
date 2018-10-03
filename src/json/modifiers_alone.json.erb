@@ -32,6 +32,31 @@
           "to_if_alone": <%= to([["spacebar", ["option", "shift", "command"]]]) %>
         }
       ]
+    },
+    {
+      "description": "Command key only to invoke lang keys",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": <%= from("left_command", [], ["any"]) %>,
+          "to": [
+            {
+              "key_code": "left_command"
+            }
+          ],
+          "to_if_alone": <%= to([["lang2", []]]) %>
+        },
+        {
+          "type": "basic",
+          "from": <%= from("right_command", [], ["any"]) %>,
+          "to": [
+            {
+              "key_code": "right_command"
+            }
+          ],
+          "to_if_alone": <%= to([["lang1", []]]) %>
+        }
+      ]
     }
   ]
 }
