@@ -43,6 +43,21 @@
               [output[:key_code], output[:modifiers]]
             ]
           ),
+          conditions: [
+            {
+              type: "device_unless",
+              identifiers: [
+                {
+                  product_id: 36897,
+                  vendor_id: 11720,
+                },
+              ]
+            },
+            {
+                "type": "frontmost_application_unless",
+                "bundle_identifiers": ["^com\\.microsoft\\.rdc\\.macos$"]
+            }
+          ]
         }
       }
     %>
